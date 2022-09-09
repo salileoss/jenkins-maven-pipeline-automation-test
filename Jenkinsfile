@@ -4,20 +4,25 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
-                mvn clean package
-            }
+				sh 'mvn -B -DskipTests clean package'       
+			}
         }
+        
         stage('Test') {
             steps {
-                echo 'Testing..'
-                mvn test
+                sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
             }
         }
-        stage('Extra') {
-            steps {
-                echo 'Saving Jar....'
-            }
+        
+    post {
+        always {
+            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
         }
+    }
     }
 }

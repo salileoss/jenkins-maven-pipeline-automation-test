@@ -4,10 +4,10 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-				sh 'mvn -B -DskipTests clean package'       
-			}
+                sh 'mvn -B -DskipTests clean package'
+            }
         }
-        
+
         stage('Test') {
             steps {
                 sh 'mvn test'
@@ -18,11 +18,11 @@ pipeline {
                 }
             }
         }
-        
-    post {
-        always {
-            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+
+    }
+            post {
+            always {
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            }
         }
-    }
-    }
 }
